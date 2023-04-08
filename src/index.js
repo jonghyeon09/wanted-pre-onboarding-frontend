@@ -8,29 +8,26 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import ToDo from "./pages/ToDo";
 
-const router = createBrowserRouter(
-  [
-    {
-      path: "/",
-      element: <App />,
-      children: [
-        {
-          path: "signup",
-          element: <SignUp />,
-        },
-        {
-          path: "signin",
-          element: <SignIn />,
-        },
-        {
-          path: "todo",
-          element: <ToDo />,
-        },
-      ],
-    },
-  ],
-  { basename: "/wanted-pre-onboarding-frontend/" }
-);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "signup",
+        element: <SignUp />,
+      },
+      {
+        path: "signin",
+        element: <SignIn />,
+      },
+      {
+        path: "todo",
+        element: <ToDo />,
+      },
+    ],
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
