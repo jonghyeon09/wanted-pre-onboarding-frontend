@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -16,14 +16,14 @@ const ToDo = () => {
 
   const handleChange = (e) => setText(e.target.value);
   const handleChangeModify = (e) => setModifyText(e.target.value);
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const response = await instance.get("/todos");
       setTodos(response.data);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [instance]);
   const handleCreate = async () => {
     try {
       await instance.post("/todos", {
@@ -68,7 +68,7 @@ const ToDo = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   return (
     <div className="container mx-auto">
