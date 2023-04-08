@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-if (localStorage.getItem("token")) {
-  axios.defaults.headers.common[
-    "Authorization"
-  ] = `Bearer ${localStorage.getItem("token")}`;
-}
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.put["Content-Type"] = "application/json";
 
@@ -15,11 +10,15 @@ const ToDo = () => {
   const [modify, setModify] = useState(null);
   const [modifyText, setModifyText] = useState("");
 
+  const instance = axios.create({
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+
   const handleChange = (e) => setText(e.target.value);
   const handleChangeModify = (e) => setModifyText(e.target.value);
   const fetchData = async () => {
     try {
-      const response = await axios.get("/todos");
+      const response = await instance.get("/todos");
       setTodos(response.data);
     } catch (error) {
       console.log(error);
@@ -27,7 +26,7 @@ const ToDo = () => {
   };
   const handleCreate = async () => {
     try {
-      await axios.post("/todos", {
+      await instance.post("/todos", {
         todo: text,
       });
       fetchData();
@@ -37,7 +36,7 @@ const ToDo = () => {
   };
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/todos/${id}`);
+      await instance.delete(`/todos/${id}`);
       fetchData();
     } catch (error) {
       console.log(error);
@@ -45,7 +44,7 @@ const ToDo = () => {
   };
   const handleCheked = async (e, id, todo) => {
     try {
-      await axios.put(`/todos/${id}`, {
+      await instance.put(`/todos/${id}`, {
         todo,
         isCompleted: e.target.checked,
       });
@@ -56,7 +55,7 @@ const ToDo = () => {
   };
   const handleUpdate = async (id, isCompleted) => {
     try {
-      await axios.put(`/todos/${id}`, {
+      await instance.put(`/todos/${id}`, {
         todo: modifyText,
         isCompleted,
       });
